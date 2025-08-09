@@ -21,6 +21,11 @@ Simple example of a retrieval agent using TensorZero and Google Gemini API.
 python main.py
 ```
 
+## Known issues
+
+- This project is created from [simple agentic-rag](https://github.com/tensorzero/tensorzero/tree/main/examples/rag-retrieval-augmented-generation/simple-agentic-rag) tutorial, so it's not realiable
+- Sometimes the agent is not capable to answer the questions (changing the model or ai provider can be better)
+
 ## Links
 
 - [TensorZero Documentation](https://www.tensorzero.com/docs/quickstart/)
