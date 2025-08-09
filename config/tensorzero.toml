@@ -1,0 +1,52 @@
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                                  GENERAL                                   │
+# └────────────────────────────────────────────────────────────────────────────┘
+[gateway]
+observability.enabled = false
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                                   MODELS                                   │
+# └────────────────────────────────────────────────────────────────────────────┘
+[models.gemini_2_5_flash_lite]
+routing = ["google_ai_studio_gemini"]
+
+[models.gemini_2_5_flash_lite.providers.google_ai_studio_gemini]
+type = "google_ai_studio_gemini"
+model_name = "gemini-2.5-flash"
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                                 FUNCTIONS                                  │
+# └────────────────────────────────────────────────────────────────────────────┘
+[functions.wikipedia_agent]
+type = "chat"
+tools = ["think", "search_wikipedia", "load_wikipedia_page", "answer_question"]
+tool_choice = "required"
+parallel_tool_calls = true
+
+[functions.wikipedia_agent.variants.baseline]
+type = "chat_completion"
+model = "google_ai_studio_gemini::gemini-2.5-flash"
+system_template = "functions/wikipedia_agent/baseline/system_template.txt"
+
+# ┌────────────────────────────────────────────────────────────────────────────┐
+# │                                   TOOLS                                    │
+# └────────────────────────────────────────────────────────────────────────────┘
+[tools.think]
+description = "Think about the question and the information you have gathered so far. This is a good time to plan your next steps."
+parameters = "tools/think.json"
+strict = true
+
+[tools.search_wikipedia]
+description = "Search Wikipedia for pages that match the query. Returns a list of page titles."
+parameters = "tools/search_wikipedia.json"
+strict = true
+
+[tools.load_wikipedia_page]
+description = "Load a Wikipedia page. Returns the page content, or an error if the page does not exist."
+parameters = "tools/load_wikipedia_page.json"
+strict = true
+
+[tools.answer_question]
+description = "End the search process and answer a question. Returns the answer to the question."
+parameters = "tools/answer_question.json"
+strict = true
